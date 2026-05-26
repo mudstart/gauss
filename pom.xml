@@ -24,6 +24,7 @@
         <module>gauss-vela</module>
         <module>gauss-cli</module>
         <module>gauss-maven-plugin</module>
+        <module>gauss-quarkus</module>
     </modules>
 
     <properties>
