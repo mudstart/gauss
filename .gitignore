@@ -1,0 +1,29 @@
+# Maven
+target/
+*.class
+*.jar
+!**/src/test/**/*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node / frontend
+node_modules/
+dist/
+.vite/
+
+# Gauss generated output
+frontend/generated/*.ts
+!frontend/generated/.gitkeep
+
+# Secrets
+*.env
+application-local.properties
