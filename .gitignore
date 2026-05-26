@@ -24,6 +24,22 @@ dist/
 frontend/generated/*.ts
 !frontend/generated/.gitkeep
 
+# LaTeX generated artifacts (keep *.tex source, ignore compiled output)
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.pdf
+*.run.xml
+*.synctex.gz
+*.toc
+
 # Secrets
 *.env
 application-local.properties
