@@ -11,5 +11,12 @@ public record EndpointMethod(
         String httpMethod,
         String path,
         List<TsParameter> parameters,
-        TsType returnType
-) {}
+        TsType returnType,
+        ReactiveKind reactiveKind
+) {
+    /** Convenience constructor for non-streaming methods (backward-compatible). */
+    public EndpointMethod(String name, String httpMethod, String path,
+                          List<TsParameter> parameters, TsType returnType) {
+        this(name, httpMethod, path, parameters, returnType, ReactiveKind.NONE);
+    }
+}

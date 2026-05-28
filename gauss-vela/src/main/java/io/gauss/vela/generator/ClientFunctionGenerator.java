@@ -64,6 +64,11 @@ public final class ClientFunctionGenerator {
     // -------------------------------------------------------------------------
 
     private String renderFunction(EndpointMethod m) {
+        if (m.reactiveKind().isStreaming()) return renderStreamingFunction(m);
+        return renderPromiseFunction(m);
+    }
+
+    private String renderPromiseFunction(EndpointMethod m) {
         String paramList = m.parameters().stream()
                 .map(TsParameter::render)
                 .collect(Collectors.joining(", "));
@@ -101,5 +106,52 @@ public final class ClientFunctionGenerator {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Generates an {@code AsyncIterable<T>} function backed by Server-Sent Events.
+     * The caller can cancel the stream via {@code AbortController}.
+     */
+    private String renderStreamingFunction(EndpointMethod m) {
+        String paramList = m.parameters().stream()
+                .map(TsParameter::render)
+                .collect(Collectors.joining(", "));
+        String sep        = paramList.isEmpty() ? "" : ", ";
+        String elementTs  = m.returnType().render();
+
+        return """
+                /**
+                 * %s %s (SSE stream → AsyncIterable<%s>)
+                 */
+                export async function* %s(%ssignal?: AbortSignal): AsyncIterable<%s> {
+                  const response = await fetch('%s', { signal });
+                  if (!response.ok) {
+                    throw new GaussApiError(response.status, await response.text());
+                  }
+                  const reader = response.body!.getReader();
+                  const decoder = new TextDecoder();
+                  let buffer = '';
+                  try {
+                    while (true) {
+                      const { done, value } = await reader.read();
+                      if (done) break;
+                      buffer += decoder.decode(value, { stream: true });
+                      const lines = buffer.split('\\n');
+                      buffer = lines.pop() ?? '';
+                      for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                          yield JSON.parse(line.slice(6)) as %s;
+                        }
+                      }
+                    }
+                  } finally {
+                    reader.releaseLock();
+                  }
+                }""".formatted(
+                m.httpMethod(), m.path(), elementTs,
+                m.name(), paramList + sep,
+                elementTs,
+                m.path(),
+                elementTs);
     }
 }
