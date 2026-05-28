@@ -1,0 +1,56 @@
+[
+  {
+    "name": "io.gauss.core.annotation.MLEndpoint",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.gauss.core.annotation.LLMEndpoint",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.gauss.core.annotation.AnonymousAllowed",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.gauss.core.annotation.DataPipeline",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.gauss.core.annotation.Ingest",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.gauss.core.annotation.Transform",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.gauss.core.annotation.Feature",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.gauss.core.annotation.Experiment",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.gauss.core.config.GaussConfig",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "io.gauss.core.config.GaussRuntime",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.gauss.core.spi.AdapterRegistry",
+    "allDeclaredMethods": true
+  }
+]

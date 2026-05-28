@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        Gauss BOM (Bill of Materials) — HU-045: Modular adoption.
+
+        Import this BOM in your project to manage Gauss dependency versions
+        without inheriting the Gauss parent POM. You can then depend on
+        individual Gauss modules (e.g. only gauss-core + gauss-vela) without
+        pulling in the full framework.
+
+        Usage:
+            <dependencyManagement>
+              <dependencies>
+                <dependency>
+                  <groupId>io.gauss</groupId>
+                  <artifactId>gauss-bom</artifactId>
+                  <version>0.1.0-SNAPSHOT</version>
+                  <type>pom</type>
+                  <scope>import</scope>
+                </dependency>
+              </dependencies>
+            </dependencyManagement>
+    -->
+
+    <groupId>io.gauss</groupId>
+    <artifactId>gauss-bom</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Gauss :: BOM</name>
+    <description>
+        Bill of Materials for the Gauss framework. Import to control versions of
+        all Gauss modules without adopting the parent POM (HU-045).
+    </description>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- ── Core layer ─────────────────────────────────────────────── -->
+            <dependency>
+                <groupId>io.gauss</groupId>
+                <artifactId>gauss-core</artifactId>
+                <version>0.1.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- ── TypeScript generator ───────────────────────────────────── -->
+            <dependency>
+                <groupId>io.gauss</groupId>
+                <artifactId>gauss-vela</artifactId>
+                <version>0.1.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- ── CLI scaffolding ────────────────────────────────────────── -->
+            <dependency>
+                <groupId>io.gauss</groupId>
+                <artifactId>gauss-cli</artifactId>
+                <version>0.1.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- ── Quarkus CDI adapter ────────────────────────────────────── -->
+            <dependency>
+                <groupId>io.gauss</groupId>
+                <artifactId>gauss-quarkus</artifactId>
+                <version>0.1.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- ── Maven build plugin ─────────────────────────────────────── -->
+            <dependency>
+                <groupId>io.gauss</groupId>
+                <artifactId>gauss-maven-plugin</artifactId>
+                <version>0.1.0-SNAPSHOT</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>

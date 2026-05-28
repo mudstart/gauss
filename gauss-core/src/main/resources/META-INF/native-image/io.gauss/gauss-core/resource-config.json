@@ -1,0 +1,9 @@
+{
+  "resources": {
+    "includes": [
+      { "pattern": "META-INF/services/io.gauss.core.spi.RuntimeAdapter" },
+      { "pattern": "META-INF/gauss/.*" }
+    ]
+  },
+  "bundles": []
+}

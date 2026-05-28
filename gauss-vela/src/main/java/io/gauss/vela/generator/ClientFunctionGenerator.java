@@ -31,6 +31,28 @@ public final class ClientFunctionGenerator {
             }
             """;
 
+    /**
+     * Auth token interceptor (HU-031 AC-4).
+     * Customize {@code getToken()} to fit your auth provider
+     * (localStorage, cookie, in-memory store, etc.).
+     */
+    private static final String AUTH_INTERCEPTOR = """
+            // ── Auth interceptor (HU-031) ────────────────────────────────────────
+            // Replace getToken() with your own token source if needed.
+            function getToken(): string | null {
+              return typeof localStorage !== 'undefined'
+                ? localStorage.getItem('gauss.token')
+                : null;
+            }
+
+            async function authFetch(url: string, init?: RequestInit): Promise<Response> {
+              const token = getToken();
+              const headers = new Headers(init?.headers);
+              if (token) headers.set('Authorization', `Bearer ${token}`);
+              return fetch(url, { ...init, headers });
+            }
+            """;
+
     private final EndpointScanner scanner;
 
     public ClientFunctionGenerator() {
@@ -53,6 +75,7 @@ public final class ClientFunctionGenerator {
         StringBuilder sb = new StringBuilder();
         sb.append(HEADER).append('\n');
         sb.append(ERROR_CLASS).append('\n');
+        sb.append(AUTH_INTERCEPTOR).append('\n');
 
         for (EndpointMethod m : methods) {
             sb.append(renderFunction(m)).append('\n');
@@ -84,10 +107,10 @@ public final class ClientFunctionGenerator {
           .append('(').append(paramList).append("): ").append(promiseRet).append(" {\n");
 
         if (m.httpMethod().equals("GET")) {
-            sb.append("  const response = await fetch('").append(m.path()).append("');\n");
+            sb.append("  const response = await authFetch('").append(m.path()).append("');\n");
         } else {
             String body = m.parameters().isEmpty() ? "{}" : m.parameters().get(0).name();
-            sb.append("  const response = await fetch('").append(m.path()).append("', {\n");
+            sb.append("  const response = await authFetch('").append(m.path()).append("', {\n");
             sb.append("    method: 'POST',\n");
             sb.append("    headers: { 'Content-Type': 'application/json' },\n");
             sb.append("    body: JSON.stringify(").append(body).append("),\n");
@@ -124,7 +147,7 @@ public final class ClientFunctionGenerator {
                  * %s %s (SSE stream → AsyncIterable<%s>)
                  */
                 export async function* %s(%ssignal?: AbortSignal): AsyncIterable<%s> {
-                  const response = await fetch('%s', { signal });
+                  const response = await authFetch('%s', { signal });
                   if (!response.ok) {
                     throw new GaussApiError(response.status, await response.text());
                   }
