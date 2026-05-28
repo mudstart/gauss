@@ -74,6 +74,11 @@
                 <artifactId>gauss-vela</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.gauss</groupId>
+                <artifactId>gauss-vela</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- CLI -->
             <dependency>

@@ -23,6 +23,10 @@
             <groupId>io.gauss</groupId>
             <artifactId>gauss-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.gauss</groupId>
+            <artifactId>gauss-vela</artifactId>
+        </dependency>
 
         <!-- Quarkus CDI (Arc) — the runtime container for @MLEndpoint beans -->
         <dependency>

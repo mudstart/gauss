@@ -109,4 +109,44 @@ class NewCommandTest {
             .contains("<artifactId>gauss-core</artifactId>")
             .contains("<version>0.1.0-SNAPSHOT</version>");
     }
+
+    // -----------------------------------------------------------------------
+    // HU-005: Fat JAR with embedded frontend
+    // -----------------------------------------------------------------------
+
+    @Test
+    void quarkusPom_hasExecPluginForNpmBuild() throws IOException {
+        Path projectRoot = tmp.resolve("fatjar-test");
+        new ProjectGenerator("fatjar-test", "com.example", "quarkus", projectRoot).generate();
+
+        String pom = Files.readString(projectRoot.resolve("pom.xml"));
+        // AC: Vite is compiled during generate-resources phase
+        assertThat(pom).contains("exec-maven-plugin");
+        assertThat(pom).contains("npm-install");
+        assertThat(pom).contains("npm-build");
+        assertThat(pom).contains("generate-resources");
+    }
+
+    @Test
+    void quarkusPom_copiesFrontendDistToMetaInfResources() throws IOException {
+        Path projectRoot = tmp.resolve("static-test");
+        new ProjectGenerator("static-test", "com.example", "quarkus", projectRoot).generate();
+
+        String pom = Files.readString(projectRoot.resolve("pom.xml"));
+        // AC: frontend/dist → META-INF/resources (Quarkus static file serving)
+        assertThat(pom).contains("META-INF/resources");
+        assertThat(pom).contains("copy-frontend");
+        assertThat(pom).contains("frontend/dist");
+    }
+
+    @Test
+    void quarkusPom_hasOsAwareNpmProfile() throws IOException {
+        Path projectRoot = tmp.resolve("npm-profile-test");
+        new ProjectGenerator("npm-profile-test", "com.example", "quarkus", projectRoot).generate();
+
+        String pom = Files.readString(projectRoot.resolve("pom.xml"));
+        // AC: Windows / Unix profiles for npm.cmd vs npm
+        assertThat(pom).contains("npm.cmd");
+        assertThat(pom).contains("<family>windows</family>");
+    }
 }

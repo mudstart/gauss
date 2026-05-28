@@ -215,8 +215,75 @@ public class ProjectGenerator {
                           <parameters>true</parameters>
                         </configuration>
                       </plugin>
+                      <!-- Build frontend and embed it in the fat JAR (HU-005) -->
+                      <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.3.0</version>
+                        <executions>
+                          <execution>
+                            <id>npm-install</id>
+                            <phase>generate-resources</phase>
+                            <goals><goal>exec</goal></goals>
+                            <configuration>
+                              <executable>${npm.executable}</executable>
+                              <arguments><argument>install</argument></arguments>
+                              <workingDirectory>${project.basedir}/frontend</workingDirectory>
+                            </configuration>
+                          </execution>
+                          <execution>
+                            <id>npm-build</id>
+                            <phase>generate-resources</phase>
+                            <goals><goal>exec</goal></goals>
+                            <configuration>
+                              <executable>${npm.executable}</executable>
+                              <arguments>
+                                <argument>run</argument>
+                                <argument>build</argument>
+                              </arguments>
+                              <workingDirectory>${project.basedir}/frontend</workingDirectory>
+                            </configuration>
+                          </execution>
+                        </executions>
+                      </plugin>
+                      <!-- Copy Vite output into Quarkus static-resources path -->
+                      <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                          <execution>
+                            <id>copy-frontend</id>
+                            <phase>process-resources</phase>
+                            <goals><goal>copy-resources</goal></goals>
+                            <configuration>
+                              <outputDirectory>${project.build.outputDirectory}/META-INF/resources</outputDirectory>
+                              <resources>
+                                <resource>
+                                  <directory>${project.basedir}/frontend/dist</directory>
+                                  <filtering>false</filtering>
+                                </resource>
+                              </resources>
+                            </configuration>
+                          </execution>
+                        </executions>
+                      </plugin>
                     </plugins>
                   </build>
+
+                  <!-- OS-aware npm executable -->
+                  <profiles>
+                    <profile>
+                      <id>windows</id>
+                      <activation><os><family>windows</family></os></activation>
+                      <properties><npm.executable>npm.cmd</npm.executable></properties>
+                    </profile>
+                    <profile>
+                      <id>unix</id>
+                      <activation><os><family>unix</family></os></activation>
+                      <properties><npm.executable>npm</npm.executable></properties>
+                    </profile>
+                  </profiles>
                 </project>
                 """.formatted(groupId, name);
     }
