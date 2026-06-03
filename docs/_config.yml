@@ -1,0 +1,79 @@
+title: Gauss Framework
+description: >-
+  Framework JVM de producción para Data Science y Machine Learning.
+  Anotaciones Java que generan endpoints HTTP, clientes TypeScript,
+  pipelines ETL, feature store y experiment tracking sin boilerplate.
+
+# Tema just-the-docs (documentación técnica profesional)
+remote_theme: just-the-docs/just-the-docs@v0.10.0
+
+url: "https://gauss-framework.github.io"
+baseurl: "/gauss"
+
+# Búsqueda
+search_enabled: true
+search:
+  heading_level: 2
+  previews: 3
+  preview_words_before: 5
+  preview_words_after: 10
+  tokenizer_separator: /[\s\-/]+/
+  rel_url: true
+  button: false
+
+# Encabezados con anclas
+heading_anchors: true
+
+# Navegación con títulos auxiliares
+nav_enabled: true
+nav_sort: order
+
+# Esquema de colores (light / dark)
+color_scheme: light
+
+# Resaltado de código
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+# Footer
+footer_content: >-
+  Gauss Framework v0.1.0-SNAPSHOT &mdash; 59/59 HUs &bull; 13 módulos &bull; ~942 tests
+
+# Colecciones para paginación
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Anclas de callout
+callouts_level: quiet
+callouts:
+  highlight:
+    color: yellow
+  important:
+    title: Importante
+    color: blue
+  new:
+    title: Nuevo
+    color: green
+  note:
+    title: Nota
+    color: purple
+  warning:
+    title: Advertencia
+    color: red
+
+# SEO
+author: Gauss Framework Team
+logo: "/assets/img/logo.png"
+
+# Excluir del build
+exclude:
+  - "*.gemspec"
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

@@ -149,4 +149,52 @@ class NewCommandTest {
         assertThat(pom).contains("npm.cmd");
         assertThat(pom).contains("<family>windows</family>");
     }
+
+    // -----------------------------------------------------------------------
+    // HU-046: CI/CD templates — GitHub Actions + GitLab CI
+    // -----------------------------------------------------------------------
+
+    @Test
+    void generatedProject_hasGithubActionsWorkflow() throws IOException {
+        Path projectRoot = tmp.resolve("ci-test");
+        new ProjectGenerator("ci-test", "com.example", "quarkus", projectRoot).generate();
+
+        Path workflow = projectRoot.resolve(".github/workflows/ci.yml");
+        assertThat(workflow).isRegularFile();
+        String content = Files.readString(workflow);
+        assertThat(content).contains("actions/checkout");
+        assertThat(content).contains("setup-java");
+        assertThat(content).contains("gauss:verify-ts-contracts");
+    }
+
+    @Test
+    void generatedProject_hasGitlabCiWorkflow() throws IOException {
+        Path projectRoot = tmp.resolve("gitlab-test");
+        new ProjectGenerator("gitlab-test", "com.example", "quarkus", projectRoot).generate();
+
+        Path workflow = projectRoot.resolve(".gitlab-ci.yml");
+        assertThat(workflow).isRegularFile();
+        String content = Files.readString(workflow);
+        assertThat(content).contains("eclipse-temurin");
+        assertThat(content).contains("gauss:verify-ts-contracts");
+    }
+
+    @Test
+    void githubWorkflow_includesBuildAndVerifyStages() throws IOException {
+        Path projectRoot = tmp.resolve("stages-test");
+        new ProjectGenerator("stages-test", "com.example", "quarkus", projectRoot).generate();
+
+        String content = Files.readString(projectRoot.resolve(".github/workflows/ci.yml"));
+        assertThat(content).contains("mvn --no-transfer-progress verify");
+    }
+
+    @Test
+    void gitlabCi_hasSeparateTestAndVerifyJobs() throws IOException {
+        Path projectRoot = tmp.resolve("jobs-test");
+        new ProjectGenerator("jobs-test", "com.example", "quarkus", projectRoot).generate();
+
+        String content = Files.readString(projectRoot.resolve(".gitlab-ci.yml"));
+        assertThat(content).contains("test:");
+        assertThat(content).contains("verify-ts-contracts:");
+    }
 }

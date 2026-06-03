@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.gauss</groupId>
+        <artifactId>gauss-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>gauss-spark</artifactId>
+    <name>Gauss :: Spark</name>
+    <description>
+        Optional Apache Spark execution engine for @DataPipeline (HU-015).
+        Enables scaling pipelines to datasets that do not fit in JVM memory
+        by delegating @Ingest and @Transform steps to a Spark cluster.
+
+        The Spark runtime is NOT a compile-time dependency of this module.
+        gauss-spark uses Class.forName reflection to detect and invoke Spark
+        at runtime, so downstream projects that do not need distributed
+        execution are unaffected. To use a real cluster, add Spark to the
+        target project with scope=provided and run via spark-submit.
+    </description>
+
+    <dependencies>
+        <!-- All Gauss pipeline annotations (@DataPipeline, @Ingest, @Transform,
+             @SparkExecution) live in gauss-core — no gauss-flume dependency needed -->
+        <dependency>
+            <groupId>io.gauss</groupId>
+            <artifactId>gauss-core</artifactId>
+        </dependency>
+
+        <!-- Testing — no Spark required; LocalSparkPipelineRunner uses pure Java -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

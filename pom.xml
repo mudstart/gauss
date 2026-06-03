@@ -23,9 +23,15 @@
         <module>gauss-bom</module>
         <module>gauss-core</module>
         <module>gauss-vela</module>
+        <module>gauss-flume</module>
+        <module>gauss-augur</module>
         <module>gauss-cli</module>
         <module>gauss-maven-plugin</module>
         <module>gauss-quarkus</module>
+        <module>gauss-vigil</module>
+        <module>gauss-stratum</module>
+        <module>gauss-lex</module>
+        <module>gauss-spark</module>
     </modules>
 
     <properties>
@@ -43,6 +49,7 @@
         <!-- Testing -->
         <junit.version>5.11.4</junit.version>
         <assertj.version>3.27.3</assertj.version>
+        <mockito.version>5.14.2</mockito.version>
 
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
@@ -99,6 +106,18 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
