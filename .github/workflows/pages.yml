@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # necesario para que configure-pages pueda habilitar Pages
   pages:    write
   id-token: write
 
@@ -34,6 +34,8 @@ jobs:
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true    # activa Pages automáticamente si no está habilitado
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
