@@ -7,7 +7,8 @@ description: >-
 # Tema just-the-docs (documentación técnica profesional)
 remote_theme: just-the-docs/just-the-docs@v0.10.0
 
-url: "https://gauss-framework.github.io"
+# URL del site — ajusta "gauss" al nombre exacto de tu repositorio en GitHub
+url: "https://mudstart.github.io"
 baseurl: "/gauss"
 
 # Búsqueda
